@@ -1,0 +1,75 @@
+import java.util.*;
+import java.util.stream.*;
+import java.time.*;
+
+public class Stat {
+        
+	public static String stat(String strg) {
+		String[] strTab = strg.split(", ");
+    List <Integer> secondList = new ArrayList<Integer>();
+    for(String trimed : strTab){      
+      String[] sTab = trimed.split("[|]");
+      //get all element converted in seconds
+      int hInS = Integer.valueOf(sTab[0]) * 3600;
+      int mInS = Integer.valueOf(sTab[1]) * 60;
+      int sec = Integer.valueOf(sTab[2]);
+      
+      int totalTimeInS = hInS + mInS + sec;
+      secondList.add(totalTimeInS);
+    }
+    
+    String range = calculateRange(secondList);
+    String average = calculateAverage(secondList);
+    String median = calculateMedian(secondList);
+    
+    return range +" " + average +" " + median;
+	}
+  
+  private static String calculateRange (List<Integer> seconds){
+    int max = seconds.stream().mapToInt(e -> e).max().getAsInt();
+    int min = seconds.stream().mapToInt(e -> e).min().getAsInt();
+    LocalTime time = LocalTime.ofSecondOfDay(max - min);
+    
+    return "Range: " + formatTime(time);
+  }
+  
+  private static String calculateAverage(List<Integer> seconds){
+    long average = (long) seconds.stream().mapToInt(e -> e).average().getAsDouble();  
+    LocalTime time = LocalTime.ofSecondOfDay(average);
+    
+    return "Average: " + formatTime(time);
+  }
+  
+  private static String calculateMedian (List<Integer> seconds){
+    boolean isOdd = (seconds.size() % 2 == 0) ? false : true;
+    Collections.sort(seconds);
+    int index = (int) Math.ceil(((float) seconds.size()) / 2);
+    int medianInt = 0;
+    
+    if (isOdd){
+      medianInt = seconds.get(index - 1);      
+     }else {       
+       medianInt = (seconds.get(index - 1) + seconds.get(index)) / 2;
+       System.out.println(medianInt);
+     }
+     LocalTime time = LocalTime.ofSecondOfDay(medianInt);   
+      
+     return "Median: " + formatTime(time);
+  }
+  
+  private static String formatTime (LocalTime time){
+    String hour = reformatTime(String.valueOf(time.getHour()));
+    String minute = reformatTime(String.valueOf(time.getMinute()));
+    String sec = reformatTime(String.valueOf(time.getSecond()));
+    
+    return hour + "|" + minute + "|" + sec;
+  }
+  
+  private static String reformatTime (String time){
+    if (time.length() == 1){
+      return "0" + time;
+    }else {
+      return time;
+    }     
+  }  
+}

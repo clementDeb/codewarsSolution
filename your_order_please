@@ -1,0 +1,17 @@
+public class Order {
+  public static String order(String words) {
+    String result = "";
+    if (words != ""){
+      Map<Integer, String> splittedWords = Stream.of(words.split(" "))
+                                  .map(w -> w)
+                                  .collect(Collectors.toMap(w -> Integer.valueOf(w.replaceAll("[A-z]+", "")), w -> w));
+      
+      //iterate through the map to build the new string using each value
+      result = splittedWords.entrySet().stream()
+                                 //.sorted(Map.Entry.<Integer, String>comparingByKey())
+                                 .map(Map.Entry::getValue) //get the value from the entrySet
+                                 .reduce("", (e1, e2) -> e1 + " " + e2).stripLeading();
+    }
+    return result;   
+  }
+}

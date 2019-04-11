@@ -1,0 +1,40 @@
+import java.util.*;
+import java.lang.Character.*;
+import java.lang.String.*;
+import java.util.Arrays.*;
+import java.util.stream.*;
+
+
+public class MexicanWave {
+
+    public static String[] wave(String str) {
+        int length = str.length();
+        //build char List to iterate over
+        List<Character> charList = str
+                                  .chars()
+                                  .mapToObj(e -> (char)e)
+                                  .collect(Collectors.toList());
+                                  
+        List<String> strList = new ArrayList<String>();
+        if (false == str.isEmpty()){        
+          for (int i = 0 ; i < length; i++){           
+            if (false == Character.isSpace(charList.get(i))){
+            //set to uppercase the wanted char
+              charList.set(i, Character.toUpperCase(charList.get(i))); 
+              //rebuild the string with the uppercase
+              String s = charList
+                        .stream()
+                        .map(e -> e.toString())
+                        .reduce("", String::concat);        
+              strList.add(s);
+              //reset letter to the original state
+              charList.set(i, Character.toLowerCase(charList.get(i)));            
+            }
+          }
+        }
+        System.out.println("strTab: " + strList.size());
+        // Your code here
+        return strList.toArray(String[]::new);
+    }
+    
+}
