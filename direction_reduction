@@ -1,0 +1,38 @@
+import java.util.*;
+
+public class DirReduction {
+    public static String[] dirReduc(String[] arr) {
+    var indexToDelete = 0;
+    var arrList = new ArrayList<String>(Arrays.asList(arr));
+    var dirListSize = arrList.size();
+    var needToRestart = false;
+    var previousDir = "";
+    
+    for (int i = 0 ; i < dirListSize; i++){
+      String d = arrList.get(i);
+      //create the boolean to check the direction tandem
+      boolean ns = d.equals("SOUTH") && previousDir.equals("NORTH");
+      boolean sn = d.equals("NORTH") && previousDir.equals("SOUTH");
+      boolean ew = d.equals("WEST") && previousDir.equals("EAST");
+      boolean we = d.equals("EAST") && previousDir.equals("WEST");
+      if (ns || sn || ew || we){
+        indexToDelete = i;
+        needToRestart = true;
+        break;
+      }else {
+        previousDir = d;
+      }
+    }
+     
+    //remove both direction that fit togther
+    if (!arrList.isEmpty() && needToRestart){
+      arrList.remove(indexToDelete);
+      arrList.remove(indexToDelete-1);
+      previousDir="";
+      return dirReduc(arrList.toArray(new String[arrList.size()]));
+    }else {
+      return arrList.toArray(new String[arrList.size()]);
+    }
+  }
+}
+
