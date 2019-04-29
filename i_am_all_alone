@@ -1,0 +1,23 @@
+public class Dinglemouse {
+
+  public static boolean allAlone(char[][] house) {
+  
+    var arraySize = house.length;
+    boolean result = false;
+    
+    for (int i = 0; i < arraySize; i++){
+      var lineSize = house[i].length;
+      var line = new String(house[i]);
+      //System.out.println(line);
+      var lineTrimmed = line.replace(" ", "");
+      System.out.println(lineTrimmed);
+      
+      if (lineTrimmed.contains("##o##")){
+        System.out.println("line in if : " + line);
+        result =  true;
+      }
+    }
+    return result;
+  }
+
+}
